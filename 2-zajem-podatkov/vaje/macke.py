@@ -8,27 +8,32 @@ import csv
 ###############################################################################
 
 # definiratje URL glavne strani bolhe za oglase z mačkami
-cats_frontpage_url = 'TODO'
+cats_frontpage_url = 'http://www.bolha.com/zivali/male-zivali/macke/?page=2'
 # mapa, v katero bomo shranili podatke
-cat_directory = 'TODO'
+cat_directory = 'moje_macke'
 # ime datoteke v katero bomo shranili glavno stran
-frontpage_filename = 'TODO'
+frontpage_filename = 'macke.html'
 # ime CSV datoteke v katero bomo shranili podatke
-csv_filename = 'TODO'
-
-
-def download_url_to_string(TODO):
+csv_filename = 'macke.csv'
+  
+def download_url_to_string(url, ime_datoteke, directory, vsili_prenos = False):
     '''This function takes a URL as argument and tries to download it
     using requests. Upon success, it returns the page contents as string.'''
     try:
-        # del kode, ki morda sproži napako
-        return TODO
-    except 'TODO':
+        print('Shranjujem {}...'.format(url), end = '')
+        sys.stdout.flush()
+        if os.path.isfile(ime_datoteke) and not vsili_prenos:
+            print('shranjeno ze od prej.')
+        return 
+        r = requests.get(url)
+    except requests.exceptions.ConnectionError:
+        print('Stran ne obstaja.')
         # koda, ki se izvede pri napaki
         # dovolj je če izpišemo opozorilo in prekinemo izvajanje funkcije
-        return TODO
-    # nadaljujemo s kodo če ni prišlo do napake
-    return TODO
+        return 
+        # nadaljujemo s kodo če ni prišlo do napake
+    else:
+        return r.text
 
 
 def save_string_to_file(text, directory, filename):
@@ -44,10 +49,11 @@ def save_string_to_file(text, directory, filename):
 # Definirajte funkcijo, ki prenese glavno stran in jo shrani v datoteko.
 
 
-def save_frontpage(TODO):
+def save_frontpage(url, directory, filename):
     '''Save "cats_frontpage_url" to the file
     "cat_directory"/"frontpage_filename"'''
-    return TODO
+    save_string_to_file(download_url_to_string(http://www.bolha.com/zivali/male-zivali/macke/, macke.html, moje_macke))
+    return  
 
 ###############################################################################
 # Po pridobitvi podatkov jih želimo obdelati.
@@ -56,16 +62,18 @@ def save_frontpage(TODO):
 
 def read_file_to_string(directory, filename):
     '''Return the contents of the file "directory"/"filename" as a string.'''
-    return TODO
-
+    with open(directory/filename) as datoteka:
+        return datoteka.read()
+        
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja vsebino spletne strani,
 # in ga razdeli na dele, kjer vsak del predstavlja en oglas. To storite s
 # pomočjo regularnih izrazov, ki označujejo začetek in konec posameznega
 # oglasa. Funkcija naj vrne seznam nizov.
 
 
-def page_to_ads(TODO):
+def page_to_ads(niz):
     '''Split "page" to a list of advertisement blocks.'''
+    vzorec = ''
     return TODO
 
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja oglas, in izlušči
@@ -109,5 +117,6 @@ def write_csv(fieldnames, rows, directory, filename):
 # stolpce [fieldnames] pridobite iz slovarjev.
 
 
-def write_cat_ads_to_csv(TODO):
-    return TODO
+def write_cat_ads_to_csv(seznam):
+
+    return write_csv
