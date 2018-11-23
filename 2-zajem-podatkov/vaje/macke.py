@@ -20,20 +20,14 @@ def download_url_to_string(url, ime_datoteke, directory, vsili_prenos = False):
     '''This function takes a URL as argument and tries to download it
     using requests. Upon success, it returns the page contents as string.'''
     try:
-        print('Shranjujem {}...'.format(url), end = '')
-        sys.stdout.flush()
-        if os.path.isfile(ime_datoteke) and not vsili_prenos:
-            print('shranjeno ze od prej.')
-        return 
         r = requests.get(url)
     except requests.exceptions.ConnectionError:
         print('Stran ne obstaja.')
         # koda, ki se izvede pri napaki
         # dovolj je če izpišemo opozorilo in prekinemo izvajanje funkcije
-        return 
+        return None
         # nadaljujemo s kodo če ni prišlo do napake
-    else:
-        return r.text
+    return r.text
 
 
 def save_string_to_file(text, directory, filename):
@@ -64,7 +58,7 @@ def read_file_to_string(directory, filename):
     '''Return the contents of the file "directory"/"filename" as a string.'''
     with open(directory/filename) as datoteka:
         return datoteka.read()
-        
+
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja vsebino spletne strani,
 # in ga razdeli na dele, kjer vsak del predstavlja en oglas. To storite s
 # pomočjo regularnih izrazov, ki označujejo začetek in konec posameznega
