@@ -43,7 +43,8 @@
    tipom /'a drevo/ z enim konstruktorjem, ki sprejme:
    - vrednost (koren) tipa /'a/ in
    - seznam (gozd) dreves tipa /'a drevo/. *)
-type 'a drevo = Koren of 'a -> Gozd of 'a drevo
+
+type 'a drevo = Drevo of 'a  * 'a drevo list
 
 (* 2.2) Definirajte naslednja rožna drevesa:
 
@@ -54,16 +55,20 @@ type 'a drevo = Koren of 'a -> Gozd of 'a drevo
 
  *)
 
-let t = 1
-let t' = t drevo  * 2 *  t drevo
-let t'' = 
+let t = Drevo (1, [])
+let t' = Drevo (2 , [t; t])
+let t'' = Drevo (3 , [Drevo (-1, []); t'; Drevo (0, [])])
 
 (* 2.3) Definirajte funkcijo, ki preveri ali je dano rožno drevo list drevesa,
    torej ima prazen gozd poddreves. *)
-let je_list = failwith "dopolni me"
+let je_list = function
+  | Drevo (_, []) -> true
+  | _ -> false
 
 (* 2.4) Definirajte funkcijo, ki preveri, ali drevo celih števil vsebuje zgolj pozitivna števila. *)
-let vsa_pozitivna = failwith "dopolni me"
+let rec vsa_pozitivna = function
+  | Drevo (x, xs) -> if x <= 0 then false 
+  
 
 (* 2.5) Definirajte funkcijo, ki izračuna največjo širino rožnega drevesa, torej največjo dolžino
    gozda, ki se pojavi v kateremkoli vozlišču rožnega drevesa. *)

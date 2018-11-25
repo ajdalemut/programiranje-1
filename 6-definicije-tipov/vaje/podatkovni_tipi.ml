@@ -41,8 +41,8 @@ type currency = Yen of float | Pound of float | Krona of float
 
 let to_pound = function
   | Pound x -> Pound x
-  | Yen x -> Pound 0.007
-  | Krona x -> Pound 0.085
+  | Yen x -> Pound (0.007 *. x)
+  | Krona x -> Pound (0.085 *. x)
 
 
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
@@ -104,11 +104,12 @@ let intbool_reverse ib_list =
 
 let rec intbool_separate ib_list =
        let rec ib_separate iacc bacc = function
-       | Int(x, xs) -> ib_separate (iacc @ [x]) bacc xs
-       | Bool(x, xs) -> ib_separate iacc (bacc @ [x]) xs
+       | Int(x, xs) -> ib_separate (x :: iacc) bacc xs
+       | Bool(x, xs) -> ib_separate iacc (x :: bacc) xs
        | Nil -> (iacc, bacc)
        in
-     ib_separate [] [] ib_list
+       ib_separate [] [] (intbool_reverse ib_list)
+     
 
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
  Določeni ste bili za vzdrževalca baze podatkov za svetovno priznano čarodejsko
@@ -162,7 +163,7 @@ type wizard = {name : string; status : status}
  - : magic_counter = {fire = 1; frost = 1; arcane = 2}
 [*----------------------------------------------------------------------------*)
 
-type magic_counter = {fire = int, frost = int, arcane = int}
+type magic_counter = {fire : int; frost : int; arcane : int}
 
 let update counter = function
   | Fire -> {counter with fire = counter.fire + 1}
@@ -186,7 +187,7 @@ let count_magic wizard_list =
              | Newbie -> count counter wizards
              | Student (magic, _) -> count (update counter magic) wizards
              | Employed (magic, _) -> count (update counter magic) wizards)
-     in count {fire = 0; frost = 0; arcane = 0} wizard_list
+       in count {fire = 0; frost = 0; arcane = 0} wizard_list
 
 (*----------------------------------------------------------------------------*]
  Želimo poiskati primernega kandidata za delovni razpis. Študent lahko postane

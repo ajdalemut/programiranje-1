@@ -43,7 +43,8 @@
    tipom /'a drevo/ z enim konstruktorjem, ki sprejme:
    - vrednost (koren) tipa /'a/ in
    - seznam (gozd) dreves tipa /'a drevo/. *)
-type 'a drevo = DopolniMe
+
+type 'a drevo = Drevo of 'a  * 'a drevo list
 
 (* 2.2) Definirajte naslednja rožna drevesa:
 
@@ -54,12 +55,13 @@ type 'a drevo = DopolniMe
 
  *)
 
-let t = failwith "dopolni me"
-let t' = failwith "dopolni me"
-let t'' = failwith "dopolni me"
+ let t = Drevo (1, [])
+ let t' = Drevo (2 , [t; t])
+ let t'' = Drevo (3 , [Drevo (1, []); t'; Drevo (0, [])])
 
 (* 2.3) Definirajte funkcijo, ki vrne gozd rožnega drevesa. *)
-let vrni_gozd = failwith "dopolni me"
+let vrni_gozd = function
+  | Drevo (_, xs) -> xs
 
 (* 2.4) Definirajte funkcijo, ki izpiše vse vrednosti v rožnem drevesu celih števil.
    Števila naj bodo v ločenih vrsticah. Uporabite (print_int : int -> unit) in

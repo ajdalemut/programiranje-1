@@ -69,8 +69,8 @@ let rec map f = function
 let map_tlrec f list =
   let rec map_aux list acc =
     match list with
-    | [] -> acc
-    | x :: xs -> map_aux xs (acc @ [f x])
+    | [] -> reverse acc
+    | x :: xs -> map_aux xs (f x :: acc)
   in
   map_aux list []
 
@@ -119,13 +119,13 @@ let rec zip list1 list2 =
 let zip_enum_tlrec list1 list2 =
   let rec zipe_aux list1 list2 i acc =
     match list1, list2 with
-    | [], [] -> acc
+    | [], [] -> reverse acc
     | _, [] | [], _ -> failwith "Different lengths of input lists."
     | x :: xs, y :: ys ->
       let element = (i, x, y) in
-      zipe_aux xs ys (i + 1) (acc @ [element])
+      zipe_aux xs ys (i + 1) (element :: acc)
    in
-zipe_aux list1 list2 0 []
+   zipe_aux list1 list2 0 []
 
 (*----------------------------------------------------------------------------*]
  Funkcija [unzip] je inverz funkcije [zip], torej sprejme seznam parov
@@ -149,11 +149,10 @@ let rec unzip = function
 let unzip_tlrec list =
   let rec unzip_aux list acc1 acc2 =
     match list with
-    | [] ->  acc1, acc2
-    | (x, y) :: tl -> unzip_aux tl (acc1 @ [x]) (acc2 @ [y])
+    | [] -> (reverse acc1, reverse acc2)
+    | (x, y) :: tl -> unzip_aux tl (x :: acc1) (y :: acc2)
   in
 unzip_aux list [] []
-    
 
 (*----------------------------------------------------------------------------*]
  Funkcija [fold_left_no_acc f list] sprejme seznam [x0; x1; ...; xn] in
@@ -185,9 +184,9 @@ let rec fold_left_no_acc f = function
 let apply_sequence f x n =
   let rec apply_aux f x n acc =
     if n < 0 then
-      acc
+      reverse acc
     else
-      apply_aux f (f x) (n - 1) (acc @ [x])
+      apply_aux f (f x) (n - 1) (x :: acc)
   in
 apply_aux f x n []
 

@@ -35,10 +35,12 @@ let kompozitum f g x = g (f (x))
    tipom /'a drevo/ z enim konstruktorjem, ki sprejme:
    - vrednost (koren) tipa /'a/ in
    - seznam (gozd) dreves tipa /'a drevo/. *)
-type 'a drevo = DopolniMe
+
+type 'a drevo = Drevo of 'a  * 'a drevo list
 
 (* 2.2) Napišite funkcijo, ki vrne koren danega rožnega drevesa. *)
-let koren = failwith "dopolni me"
+let koren = function
+  | Drevo (x, _) -> x
 
 (* 2.3) Napišite funkcijo, ki preveri, ali drevo celih števil vsebuje kakšno negativno število. *)
 let kaksno_negativno = failwith "dopolni me"
