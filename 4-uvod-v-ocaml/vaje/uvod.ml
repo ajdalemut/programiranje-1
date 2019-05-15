@@ -9,7 +9,10 @@
  - : int = 3
 [*----------------------------------------------------------------------------*)
 
-let rec penultimate_element = ()
+let rec penultimate_element = function
+  | x :: _ :: [] -> x
+  | _ :: xs -> penultimate_element xs
+| [] -> failwith "List is too short."
 
 (*----------------------------------------------------------------------------*]
  Funkcija [get k list] poišče [k]-ti element v seznamu [list]. Številčenje
@@ -25,7 +28,7 @@ let rec get = ()
 (*----------------------------------------------------------------------------*]
  Funkcija [double] podvoji pojavitve elementov v seznamu.
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- # podvoji [1; 2; 3];;
+ # double [1; 2; 3];;
  - : int list = [1; 1; 2; 2; 3; 3]
 [*----------------------------------------------------------------------------*)
 
