@@ -23,7 +23,7 @@ module type Comparable = sig
 
 module Cmp_Int = struct
   type t = int
-  let compare x y = failwith "to do"
+  let compare x y = if x < y then LT else if x = y then EQ else GT
 end
 
 (*----------------------------------------------------------------------------*]
@@ -44,6 +44,14 @@ module Cmp_Int_prescribed = (Cmp_Int : Comparable with type t = int)
  Funkcija [Pervasives.compare s t] vrne -1 če je s < t, 0 če s = t in 1 za s > t
 [*----------------------------------------------------------------------------*)
 
+module Cmp_String = struct
+  type t = string
+  let compare x y =
+    match Pervasives.compare x y with
+    | v when v < 0 -> LT
+    | 0 -> EQ
+    | _ -> GT
+end
 
 (*----------------------------------------------------------------------------*]
  Funktor je preslikava iz modula v modul. Sedaj definiraj funktor, ki sprejme
@@ -55,23 +63,24 @@ module Cmp_Int_prescribed = (Cmp_Int : Comparable with type t = int)
  modula ujema s tipom modula, ki ga podamo kot argument
 [*----------------------------------------------------------------------------*)
 
-(*
+
 module Cmp_inv (Cmp : Comparable) : Comparable with type t = Cmp.t  = struct
-  type t = ...
-  let compare x y = ...
+  type t = Cmp.t
+  let compare x y = match Cmp.compare x y with
+    | LT -> GT
+    | EQ -> EQ
+    | GT -> LT
 end
- *)
 
 (*----------------------------------------------------------------------------*]
  Funktor uporabljamo podobno kot funkcije, le da v tem primeru potrebujemo
  oklepaje okrog argumentov
 [*----------------------------------------------------------------------------*)
 
-(*
 module Cmp_Int_inv = Cmp_inv (Cmp_Int)
+
 let _ = Cmp_Int.compare (-9000) 42;;
 let _ = Cmp_Int_inv.compare (-9000) 42;;
- *)
 
 (*----------------------------------------------------------------------------*]
  V primeru, ko imamo dva modula A in B, ki ju primerjamo preko [Comparable]
@@ -87,6 +96,15 @@ let _ = Cmp_Int_inv.compare (-9000) 42;;
  [Cmp_lex : Comparable with type t = A.t * B.t]
 [*----------------------------------------------------------------------------*)
 
+module Cmp_lex (A : Comparable) (B : Comparable)
+  : Comparable with type t = A.t * B.t
+  = struct
+    type t = A.t * B.t
+    let compare (a1, b1) (a2, b2) =
+      match A.compare a1 a2 with
+      | (LT | GT) as x -> x
+      | EQ -> B.compare b1 b2
+end
 
 (*----------------------------------------------------------------------------*]
  Sedaj napišemo signaturo prioritetne vrste. Imamo tip kopice, ki ga označimo s

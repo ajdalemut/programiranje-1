@@ -9,6 +9,7 @@
  - : bool = true
 [*----------------------------------------------------------------------------*)
 
+let bst_of_list list = List.fold_right insert list Empty
 
 (*----------------------------------------------------------------------------*]
  Funkcija [tree_sort] uredi seznam s pomočjo pretvorbe v bst in nato nazaj
@@ -20,6 +21,7 @@
  - : string list = ["a"; "b"; "c"; "d"; "e"; "f"]
 [*----------------------------------------------------------------------------*)
 
+let tree_sort list = list |> bst_of_list |> list_of_tree
 
 (*----------------------------------------------------------------------------*]
  Funkcija [follow directions tree] tipa [direction list -> 'a tree -> 'a option]
