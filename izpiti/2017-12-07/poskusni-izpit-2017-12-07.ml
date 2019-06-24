@@ -4,23 +4,26 @@
 
 (* 1.1) Definirajte funkcijo, ki vzame dve celi števili ter vrne njuno vsoto.
    Primer: /sestej 2 3 = 5/ *)
-let sestej = failwith "dopolni me"
+let sestej a b =  a + b
 
 (* 1.2) Definirajte funkcijo, ki svojemu argumentu prišteje 3.
    Primer: /pristej_tri 10 = 13/ *)
-let pristej_tri = failwith "dopolni me"
+let pristej_tri x = x + 3
 
 (* 1.3) Definirajte funkcijo, ki vsem elementom seznama prišteje 5.
    Primer: /vsem_pristej_pet [1; 2] = [6; 7]/ *)
-let vsem_pristej_pet = failwith "dopolni me"
+let rec vsem_pristej_pet = function
+  | [] -> []
+  | x :: xs -> (x + 5) :: vsem_pristej_pet xs
 
 (* 1.4) Definirajte funkcijo, ki vrne zadnjo komponento nabora s tremi elementi.
    Primer: /tretji (1, "horse", [None]) = [None]/ *)
-let tretji = failwith "dopolni me"
+let tretji (x, y, z) = z
+  
 
 (* 1.5) Definirajte funkcijo, ki vzame dve funkciji ter vrne njun kompozitum.
    Primer: /kompozitum succ string_of_int 5 = "6"/ *)
-let kompozitum = failwith "dopolni me"
+let kompozitum f g x = g (f (x))
 
 
 (* ======================================= *)
@@ -32,10 +35,12 @@ let kompozitum = failwith "dopolni me"
    tipom /'a drevo/ z enim konstruktorjem, ki sprejme:
    - vrednost (koren) tipa /'a/ in
    - seznam (gozd) dreves tipa /'a drevo/. *)
-type 'a drevo = DopolniMe
+
+type 'a drevo = Drevo of 'a  * 'a drevo list
 
 (* 2.2) Napišite funkcijo, ki vrne koren danega rožnega drevesa. *)
-let koren = failwith "dopolni me"
+let koren = function
+  | Drevo (x, _) -> x
 
 (* 2.3) Napišite funkcijo, ki preveri, ali drevo celih števil vsebuje kakšno negativno število. *)
 let kaksno_negativno = failwith "dopolni me"
